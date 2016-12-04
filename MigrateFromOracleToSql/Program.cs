@@ -212,6 +212,42 @@ namespace MigrateFromOracleToSql
         }
 
 
+        private static Fields CreateIdNameTherapeuticTimestampFields()
+        {
+            var returnFields = new Fields();
+
+            returnFields.Add(new FieldInfo
+            {
+                OrdinalPosition = 0,
+                Name = "Id",
+                Type = typeof(int)
+            });
+
+            returnFields.Add(new FieldInfo
+            {
+                OrdinalPosition = 1,
+                Name = "Name",
+                Type = typeof(string)
+            });
+
+            returnFields.Add(new FieldInfo
+            {
+                OrdinalPosition = 2,
+                Name = "TherapeuticAreaId",
+                Type = typeof(int)
+            });
+
+
+            returnFields.Add(new FieldInfo
+            {
+                OrdinalPosition = 3,
+                Name = "Created",
+                Type = typeof(DateTime)
+            });
+
+            return returnFields;
+        }
+
         private static Fields CreateIdNameTimestampFields()
         {
             var returnFields = new Fields();
@@ -257,8 +293,26 @@ namespace MigrateFromOracleToSql
             //Users.
             LoadUser(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameFullnameTimestampFields());
 
+            //Time scope.
+            LoadTimeScope(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
+
+            //Sub Activity.
+            LoadSubActivity(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
+
+            //Storage condition.
+            LoadStorageConditions(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
+
+            //Product Responsibilities.
+            LoadProductResponsibilities(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
+            
             //Prescription status.
             LoadPrescriptionStatus(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
+
+            //Therapeutic areas.
+            LoadTherapeuticAreas(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
+
+            //Product names.
+            LoadProductNames(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTherapeuticTimestampFields());
 
             //Approval procedures.
             LoadApprovalProcedures(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
@@ -296,6 +350,70 @@ namespace MigrateFromOracleToSql
             Console.WriteLine("Finished loading data");
 
             Console.ReadKey();
+        }
+
+        private static void LoadProductResponsibilities(BulkCopyDataIntoSqlServer bulkCopyDataIntoSqlServer,
+            DirectoryInfo directoryInfo,
+            string userName,
+            Fields fields)
+        {
+            Console.WriteLine("Start loading Product Responsibilities.");
+
+            bulkCopyDataIntoSqlServer.LoadTable(fields,
+                "ProductResponsibilities",
+                Settings.Default.ConnectionString,
+                Path.Combine(directoryInfo.FullName, "PRODUCT_RESPONSIBILITY.XLSX"),
+                userName);
+
+            Console.WriteLine("Finished loading Prescription Status.");
+        }
+
+        private static void LoadTimeScope(BulkCopyDataIntoSqlServer bulkCopyDataIntoSqlServer,
+            DirectoryInfo directoryInfo,
+            string userName,
+            Fields fields)
+        {
+            Console.WriteLine("Start loading Time scopes.");
+
+            bulkCopyDataIntoSqlServer.LoadTable(fields,
+                "TimeScopes",
+                Settings.Default.ConnectionString,
+                Path.Combine(directoryInfo.FullName, "TIMESCOPE.XLSX"),
+                userName);
+
+            Console.WriteLine("Finished loading Time scopes.");
+        }
+
+        private static void LoadSubActivity(BulkCopyDataIntoSqlServer bulkCopyDataIntoSqlServer,
+            DirectoryInfo directoryInfo,
+            string userName,
+            Fields fields)
+        {
+            Console.WriteLine("Start loading Sub Activity.");
+
+            bulkCopyDataIntoSqlServer.LoadTable(fields,
+                "SubActivities",
+                Settings.Default.ConnectionString,
+                Path.Combine(directoryInfo.FullName, "SUB_ACTIVITY.XLSX"),
+                userName);
+
+            Console.WriteLine("Finished loading Sub Activity.");
+        }
+
+        private static void LoadStorageConditions(BulkCopyDataIntoSqlServer bulkCopyDataIntoSqlServer,
+            DirectoryInfo directoryInfo,
+            string userName,
+            Fields fields)
+        {
+            Console.WriteLine("Start loading Storage Conditions.");
+
+            bulkCopyDataIntoSqlServer.LoadTable(fields,
+                "StorageConditions",
+                Settings.Default.ConnectionString,
+                Path.Combine(directoryInfo.FullName, "STORAGE_CONDITION.XLSX"),
+                userName);
+
+            Console.WriteLine("Finished loading Storage Conditions.");
         }
 
         private static void LoadPrescriptionStatus(BulkCopyDataIntoSqlServer bulkCopyDataIntoSqlServer,
@@ -535,6 +653,38 @@ namespace MigrateFromOracleToSql
                 Path.Combine(directoryInfo.FullName, "DISTRIBUTOR.XLSX"), userName);
 
             Console.WriteLine("Finished loading Distributors.");
+        }
+
+        private static void LoadTherapeuticAreas(BulkCopyDataIntoSqlServer bulkCopyDataIntoSqlServer,
+            DirectoryInfo directoryInfo,
+            string userName,
+            Fields fields)
+        {
+            Console.WriteLine("Start loading Therapeutic Areas.");
+
+            bulkCopyDataIntoSqlServer.LoadTable(fields,
+                "TherapeuticAreas",
+                Settings.Default.ConnectionString,
+                Path.Combine(directoryInfo.FullName, "THERAPEUTIC_AREA.XLSX"),
+                userName);
+
+            Console.WriteLine("Finished loading Product Names.");
+        }
+
+        private static void LoadProductNames(BulkCopyDataIntoSqlServer bulkCopyDataIntoSqlServer,
+            DirectoryInfo directoryInfo,
+            string userName,
+            Fields fields)
+        {
+            Console.WriteLine("Start loading Product Names.");
+
+            bulkCopyDataIntoSqlServer.LoadTable(fields,
+                "ProductNames",
+                Settings.Default.ConnectionString,
+                Path.Combine(directoryInfo.FullName, "PRODUCT_NAME.XLSX"),
+                userName);
+
+            Console.WriteLine("Finished loading Product Names.");
         }
 
         private static void LoadApprovalProcedures(BulkCopyDataIntoSqlServer bulkCopyDataIntoSqlServer,

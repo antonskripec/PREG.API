@@ -197,6 +197,23 @@ namespace PREG.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProductResponsibilities",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Created = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(maxLength: 75, nullable: false),
+                    Updated = table.Column<DateTime>(nullable: true),
+                    UpdatedBy = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductResponsibilities", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ResponsibleManagers",
                 columns: table => new
                 {
@@ -211,6 +228,74 @@ namespace PREG.API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ResponsibleManagers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StorageConditions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Created = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(maxLength: 75, nullable: false),
+                    Updated = table.Column<DateTime>(nullable: true),
+                    UpdatedBy = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StorageConditions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SubActivities",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Created = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(maxLength: 75, nullable: false),
+                    Updated = table.Column<DateTime>(nullable: true),
+                    UpdatedBy = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SubActivities", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TherapeuticAreas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Created = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(maxLength: 75, nullable: false),
+                    Updated = table.Column<DateTime>(nullable: true),
+                    UpdatedBy = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TherapeuticAreas", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TimeScopes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Created = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(maxLength: 75, nullable: false),
+                    Updated = table.Column<DateTime>(nullable: true),
+                    UpdatedBy = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TimeScopes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -304,6 +389,30 @@ namespace PREG.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProductNames",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Created = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(maxLength: 75, nullable: false),
+                    TherapeuticAreaId = table.Column<int>(nullable: false),
+                    Updated = table.Column<DateTime>(nullable: true),
+                    UpdatedBy = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductNames", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductNames_TherapeuticAreas_TherapeuticAreaId",
+                        column: x => x.TherapeuticAreaId,
+                        principalTable: "TherapeuticAreas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Errands",
                 columns: table => new
                 {
@@ -369,6 +478,11 @@ namespace PREG.API.Migrations
                 column: "PhaseGroupId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProductNames_TherapeuticAreaId",
+                table: "ProductNames",
+                column: "TherapeuticAreaId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Users_PermissionId",
                 table: "Users",
                 column: "PermissionId");
@@ -404,6 +518,21 @@ namespace PREG.API.Migrations
                 name: "PrescriptionStatuses");
 
             migrationBuilder.DropTable(
+                name: "ProductNames");
+
+            migrationBuilder.DropTable(
+                name: "ProductResponsibilities");
+
+            migrationBuilder.DropTable(
+                name: "StorageConditions");
+
+            migrationBuilder.DropTable(
+                name: "SubActivities");
+
+            migrationBuilder.DropTable(
+                name: "TimeScopes");
+
+            migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
@@ -417,6 +546,9 @@ namespace PREG.API.Migrations
 
             migrationBuilder.DropTable(
                 name: "ResponsibleManagers");
+
+            migrationBuilder.DropTable(
+                name: "TherapeuticAreas");
 
             migrationBuilder.DropTable(
                 name: "Permissions");

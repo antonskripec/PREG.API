@@ -8,7 +8,7 @@ using PREG.API.Models;
 namespace PREG.API.Migrations
 {
     [DbContext(typeof(PregDbContext))]
-    [Migration("20161204160229_InitialCreate")]
+    [Migration("20161204170111_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -360,6 +360,56 @@ namespace PREG.API.Migrations
                     b.ToTable("PrescriptionStatuses");
                 });
 
+            modelBuilder.Entity("PREG.API.Models.ProductName", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Created");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired();
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(75);
+
+                    b.Property<int>("TherapeuticAreaId");
+
+                    b.Property<DateTime?>("Updated");
+
+                    b.Property<string>("UpdatedBy");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TherapeuticAreaId");
+
+                    b.ToTable("ProductNames");
+                });
+
+            modelBuilder.Entity("PREG.API.Models.ProductResponsibility", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Created");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired();
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(75);
+
+                    b.Property<DateTime?>("Updated");
+
+                    b.Property<string>("UpdatedBy");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductResponsibilities");
+                });
+
             modelBuilder.Entity("PREG.API.Models.ResponsibleManager", b =>
                 {
                     b.Property<int>("Id")
@@ -381,6 +431,98 @@ namespace PREG.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ResponsibleManagers");
+                });
+
+            modelBuilder.Entity("PREG.API.Models.StorageCondition", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Created");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired();
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(75);
+
+                    b.Property<DateTime?>("Updated");
+
+                    b.Property<string>("UpdatedBy");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StorageConditions");
+                });
+
+            modelBuilder.Entity("PREG.API.Models.SubActivity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Created");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired();
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(75);
+
+                    b.Property<DateTime?>("Updated");
+
+                    b.Property<string>("UpdatedBy");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SubActivities");
+                });
+
+            modelBuilder.Entity("PREG.API.Models.TherapeuticArea", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Created");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired();
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(75);
+
+                    b.Property<DateTime?>("Updated");
+
+                    b.Property<string>("UpdatedBy");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TherapeuticAreas");
+                });
+
+            modelBuilder.Entity("PREG.API.Models.TimeScope", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Created");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired();
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(75);
+
+                    b.Property<DateTime?>("Updated");
+
+                    b.Property<string>("UpdatedBy");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TimeScopes");
                 });
 
             modelBuilder.Entity("PREG.API.Models.User", b =>
@@ -467,6 +609,14 @@ namespace PREG.API.Migrations
                     b.HasOne("PREG.API.Models.PhaseGroup", "PhaseGroup")
                         .WithMany()
                         .HasForeignKey("PhaseGroupId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("PREG.API.Models.ProductName", b =>
+                {
+                    b.HasOne("PREG.API.Models.TherapeuticArea", "TherapeuticArea")
+                        .WithMany()
+                        .HasForeignKey("TherapeuticAreaId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

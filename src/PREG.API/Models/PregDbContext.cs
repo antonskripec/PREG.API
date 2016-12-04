@@ -9,6 +9,18 @@ namespace PREG.API.Models
             
         }
 
+        public DbSet<TimeScope> TimeScopes { get; set; }
+
+        public DbSet<SubActivity> SubActivities { get; set; }
+
+        public DbSet<TherapeuticArea> TherapeuticAreas { get; set; }
+
+        public DbSet<StorageCondition> StorageConditions { get; set; }
+
+        public DbSet<ProductResponsibility> ProductResponsibilities { get; set; }
+
+        public DbSet<ProductName> ProductNames { get; set; }        
+
         public DbSet<PrescriptionStatus> PrescriptionStatuses { get; set; }
         
         public DbSet<ApprovalProcedure> ApprovalProcedures { get; set; }
