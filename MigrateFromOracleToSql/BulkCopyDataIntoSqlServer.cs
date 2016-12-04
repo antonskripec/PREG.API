@@ -20,8 +20,16 @@ namespace MigrateFromOracleToSql
             var dataTable = new DataTable(tableName);
 
             foreach (var parameter in parameters)
-            {
-                dataTable.Columns.Add(parameter.Name, parameter.Type);
+            {                
+                if (parameter.Type == typeof(DateTime?))
+                {
+                    var column = dataTable.Columns.Add(parameter.Name, typeof(DateTime));
+                    column.AllowDBNull = true;
+                }
+                else
+                {
+                    dataTable.Columns.Add(parameter.Name, parameter.Type);
+                }
             }
 
             dataTable.Columns.Add("CreatedBy", typeof(string));
@@ -59,10 +67,19 @@ namespace MigrateFromOracleToSql
                         var cellValue= 
                             ws1.Cell(row, parameter.OrdinalPosition+1).Value.ToString();
 
-                        values.Add(cellValue);
+
+                        if (string.IsNullOrEmpty(cellValue) && parameter.Type == typeof(DateTime?))
+                        {
+                            values.Add(null);
+                        }
+                        else
+                        {
+                            values.Add(cellValue);
+                        }
+                        
                     }
 
-                    var hasData = !values.Any(string.IsNullOrEmpty);
+                    var hasData = !values.All(string.IsNullOrEmpty);
 
                     if (hasData)
                     {
