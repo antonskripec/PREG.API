@@ -14,10 +14,16 @@ namespace PREG.API.Models
         public DbSet<Distributor> Distributors { get; set; }
 
         public DbSet<DosageForm> DosageForms { get; set; }
+        
+        public DbSet<Errand> Errands { get; set; }
 
         public DbSet<ErrandTypeGroup> ErrandTypeGroups { get; set; }
 
         public DbSet<ErrandType> ErrandTypes { get; set; }
+
+        public DbSet<PackageDetailType> PackageDetailTypes { get; set; }
+
+        public DbSet<PackageType> PackageTypes { get; set; }
 
         public DbSet<Manufacturer> Manufacturers { get; set; }
 
@@ -27,5 +33,13 @@ namespace PREG.API.Models
 
         public DbSet<Permission> Permissions { get; set; }
 
+        public DbSet<User> Users { get; set; }
+
+        public DbSet<UserGroup> UserGroups { get; set; }        
+
+        public DbSet<OpenStorage> OpenStorages { get; set; }
+
+        public DbSet<ResponsibleManager> ResponsibleManagers { get; set; }
+        
     }
 }

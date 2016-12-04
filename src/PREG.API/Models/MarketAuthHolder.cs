@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PREG.API.Models
 {
-    public class PackageDetail      
+    public class MarketAuthHolder    
     {
         [Key]
         public int Id { get; set; }

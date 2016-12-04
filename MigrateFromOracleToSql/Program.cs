@@ -83,6 +83,70 @@ namespace MigrateFromOracleToSql
         }
 
 
+        private static Fields CreateIdNameFields()
+        {
+            var returnFields = new Fields();
+
+            returnFields.Add(new FieldInfo
+            {
+                OrdinalPosition = 0,
+                Name = "Id",
+                Type = typeof(int)
+            });
+
+            returnFields.Add(new FieldInfo
+            {
+                OrdinalPosition = 1,
+                Name = "Name",
+                Type = typeof(string)
+            });
+
+
+            return returnFields;
+        }
+
+        private static Fields CreateIdNameFullnameTimestampFields()
+        {
+            var returnFields = new Fields();
+
+            returnFields.Add(new FieldInfo
+            {
+                OrdinalPosition = 0,
+                Name = "Id",
+                Type = typeof(int)
+            });
+
+            returnFields.Add(new FieldInfo
+            {
+                OrdinalPosition = 1,
+                Name = "Name",
+                Type = typeof(string)
+            });
+
+            returnFields.Add(new FieldInfo
+            {
+                OrdinalPosition = 2,
+                Name = "PermissionId",
+                Type = typeof(string)
+            });
+
+            returnFields.Add(new FieldInfo
+            {
+                OrdinalPosition = 3,
+                Name = "Created",
+                Type = typeof(DateTime)
+            });
+
+            returnFields.Add(new FieldInfo
+            {
+                OrdinalPosition = 4,
+                Name = "FullName",
+                Type = typeof(string)
+            });
+
+            return returnFields;
+        }
+
 
         private static Fields CreateIdNameTimestampFields()
         {
@@ -123,6 +187,9 @@ namespace MigrateFromOracleToSql
 
             var bulkCopyDataIntoSqlServer = new BulkCopyDataIntoSqlServer();
 
+            //Users.
+            LoadUser(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameFullnameTimestampFields());
+
             //Approval procedures.
             LoadApprovalProcedures(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
 
@@ -131,6 +198,24 @@ namespace MigrateFromOracleToSql
 
             //Dosage forms.
             LoadDosageForms(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
+
+            //Manufacturers.
+            LoadManufacturers(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
+
+            //Open Storage.
+            LoadOpenStorage(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
+
+            //Package type.
+            LoadPackageType(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
+
+            //Package detail type.
+            LoadPackageDetailType(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
+
+            //Permissions.
+            LoadPermissions(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameFields());
+
+            //Responsible managers.
+            LoadResponsibleManagers(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
 
             //Errand type groups and Errand types.
             LoadErrandTypeGroups(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
@@ -146,6 +231,102 @@ namespace MigrateFromOracleToSql
             Console.WriteLine("Finished loading data");
 
             Console.ReadKey();
+        }
+
+        private static void LoadOpenStorage(BulkCopyDataIntoSqlServer bulkCopyDataIntoSqlServer,
+            DirectoryInfo directoryInfo,
+            string userName,
+            Fields fields)
+        {
+            Console.WriteLine("Start loading Open Storage.");
+
+            bulkCopyDataIntoSqlServer.LoadTable(fields,
+                "OpenStorages",
+                Settings.Default.ConnectionString,
+                Path.Combine(directoryInfo.FullName, "OPEN_STORAGE.XLSX"),
+                userName);
+
+            Console.WriteLine("Finished loading Open Storage.");
+        }
+
+        private static void LoadPackageType(BulkCopyDataIntoSqlServer bulkCopyDataIntoSqlServer,
+            DirectoryInfo directoryInfo,
+            string userName,
+            Fields fields)
+        {
+            Console.WriteLine("Start loading Package Type.");
+
+            bulkCopyDataIntoSqlServer.LoadTable(fields,
+                "PackageTypes",
+                Settings.Default.ConnectionString,
+                Path.Combine(directoryInfo.FullName, "PACKAGE_TYPE.XLSX"),
+                userName);
+
+            Console.WriteLine("Finished loading Package Type.");
+        }
+
+        private static void LoadUser(BulkCopyDataIntoSqlServer bulkCopyDataIntoSqlServer,
+            DirectoryInfo directoryInfo,
+            string userName,
+            Fields fields)
+        {
+            Console.WriteLine("Start loading Users.");
+
+            bulkCopyDataIntoSqlServer.LoadTable(fields,
+                "Users",
+                Settings.Default.ConnectionString,
+                Path.Combine(directoryInfo.FullName, "PREG_USER.XLSX"),
+                userName);
+
+            Console.WriteLine("Finished loading Users.");
+        }
+
+        private static void LoadResponsibleManagers(BulkCopyDataIntoSqlServer bulkCopyDataIntoSqlServer,
+            DirectoryInfo directoryInfo,
+            string userName,
+            Fields fields)
+        {
+            Console.WriteLine("Start loading Responsible Managers.");
+
+            bulkCopyDataIntoSqlServer.LoadTable(fields,
+                "ResponsibleManagers",
+                Settings.Default.ConnectionString,
+                Path.Combine(directoryInfo.FullName, "RESPONSIBLE_MANAGER.XLSX"),
+                userName);
+
+            Console.WriteLine("Finished loading Responsible Managers.");
+        }
+
+        private static void LoadPermissions(BulkCopyDataIntoSqlServer bulkCopyDataIntoSqlServer,
+            DirectoryInfo directoryInfo,
+            string userName,
+            Fields fields)
+        {
+            Console.WriteLine("Start loading Permissions.");
+
+            bulkCopyDataIntoSqlServer.LoadTable(fields,
+                "Permissions",
+                Settings.Default.ConnectionString,
+                Path.Combine(directoryInfo.FullName, "PERMISSION.XLSX"),
+                userName);
+
+            Console.WriteLine("Finished loading Permissions.");
+        }
+
+        private static void LoadPackageDetailType(BulkCopyDataIntoSqlServer bulkCopyDataIntoSqlServer,
+            DirectoryInfo directoryInfo,
+            string userName,
+            Fields fields)
+        {
+            Console.WriteLine("Start loading Package Detail Type.");
+
+            bulkCopyDataIntoSqlServer.LoadTable(fields,
+                "PackageDetailTypes",
+                Settings.Default.ConnectionString,
+                Path.Combine(directoryInfo.FullName, "PACKAGE_DETAIL_TYPE.XLSX"),
+                userName);
+
+            Console.WriteLine("Finished loading Package Detail Type.");
         }
 
         private static void LoadPhases(BulkCopyDataIntoSqlServer bulkCopyDataIntoSqlServer,
@@ -194,6 +375,22 @@ namespace MigrateFromOracleToSql
                 userName);
 
             Console.WriteLine("Finished loading Errand type groups.");
+        }
+
+        private static void LoadManufacturers(BulkCopyDataIntoSqlServer bulkCopyDataIntoSqlServer,
+                                            DirectoryInfo directoryInfo,
+                                            string userName,
+                                            Fields fields)
+        {
+            Console.WriteLine("Start loading Manufacturers.");
+
+            bulkCopyDataIntoSqlServer.LoadTable(fields,
+                "Manufacturers",
+                Settings.Default.ConnectionString,
+                Path.Combine(directoryInfo.FullName, "MANUFACTURER.XLSX"),
+                userName);
+
+            Console.WriteLine("Finished loading Manufacturers.");
         }
 
         private static void LoadErrandTypes(BulkCopyDataIntoSqlServer bulkCopyDataIntoSqlServer,
