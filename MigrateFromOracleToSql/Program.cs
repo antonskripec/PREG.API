@@ -12,6 +12,41 @@ namespace MigrateFromOracleToSql
             LoadData();
         }
 
+        private static Fields CreateErrandTypeFields()
+        {
+            var returnFields = new Fields();
+
+            returnFields.Add(new FieldInfo
+            {
+                OrdinalPosition = 0,
+                Name = "Id",
+                Type = typeof(int)
+            });
+
+            returnFields.Add(new FieldInfo
+            {
+                OrdinalPosition = 1,
+                Name = "Name",
+                Type = typeof(string)
+            });
+
+            returnFields.Add(new FieldInfo
+            {
+                OrdinalPosition = 2,
+                Name = "ErrandTypeGroupId",
+                Type = typeof(int)
+            });
+
+            returnFields.Add(new FieldInfo
+            {
+                OrdinalPosition = 3,
+                Name = "Created",
+                Type = typeof(DateTime)
+            });
+
+            return returnFields;
+        }
+
         private static Fields CreatePhasesFields()
         {
             var returnFields = new Fields();
@@ -99,6 +134,7 @@ namespace MigrateFromOracleToSql
 
             //Errand type groups and Errand types.
             LoadErrandTypeGroups(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
+            LoadErrandTypes(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateErrandTypeFields());
 
 
             //Phase groups and phases.
@@ -158,6 +194,22 @@ namespace MigrateFromOracleToSql
                 userName);
 
             Console.WriteLine("Finished loading Errand type groups.");
+        }
+
+        private static void LoadErrandTypes(BulkCopyDataIntoSqlServer bulkCopyDataIntoSqlServer,
+                                            DirectoryInfo directoryInfo,
+                                            string userName,
+                                            Fields fields)
+        {
+            Console.WriteLine("Start loading Errand types.");
+
+            bulkCopyDataIntoSqlServer.LoadTable(fields,
+                "ErrandTypes",
+                Settings.Default.ConnectionString,
+                Path.Combine(directoryInfo.FullName, "ERRAND_TYPE.XLSX"),
+                userName);
+
+            Console.WriteLine("Finished loading Errand types.");
         }
 
         private static void LoadDosageForms(BulkCopyDataIntoSqlServer bulkCopyDataIntoSqlServer,
