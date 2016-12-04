@@ -9,6 +9,8 @@ namespace PREG.API.Models
             
         }
 
+        public DbSet<PrescriptionStatus> PrescriptionStatuses { get; set; }
+        
         public DbSet<ApprovalProcedure> ApprovalProcedures { get; set; }
 
         public DbSet<Distributor> Distributors { get; set; }

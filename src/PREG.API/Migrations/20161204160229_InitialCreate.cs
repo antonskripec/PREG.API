@@ -180,6 +180,23 @@ namespace PREG.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PrescriptionStatuses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Created = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(maxLength: 75, nullable: false),
+                    Updated = table.Column<DateTime>(nullable: true),
+                    UpdatedBy = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PrescriptionStatuses", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ResponsibleManagers",
                 columns: table => new
                 {
@@ -382,6 +399,9 @@ namespace PREG.API.Migrations
 
             migrationBuilder.DropTable(
                 name: "PackageTypes");
+
+            migrationBuilder.DropTable(
+                name: "PrescriptionStatuses");
 
             migrationBuilder.DropTable(
                 name: "Users");

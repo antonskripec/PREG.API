@@ -251,49 +251,67 @@ namespace MigrateFromOracleToSql
 
             var bulkCopyDataIntoSqlServer = new BulkCopyDataIntoSqlServer();
 
-            ////Permissions.
-            //LoadPermissions(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameFields());
+            //Permissions.
+            LoadPermissions(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameFields());
 
-            ////Users.
-            //LoadUser(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameFullnameTimestampFields());
+            //Users.
+            LoadUser(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameFullnameTimestampFields());
 
-            ////Approval procedures.
-            //LoadApprovalProcedures(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
+            //Prescription status.
+            LoadPrescriptionStatus(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
 
-            ////Distributors.
-            //LoadDistributors(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
+            //Approval procedures.
+            LoadApprovalProcedures(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
 
-            ////Dosage forms.
-            //LoadDosageForms(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
+            //Distributors.
+            LoadDistributors(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
 
-            ////Manufacturers.
-            //LoadManufacturers(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
+            //Dosage forms.
+            LoadDosageForms(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
 
-            ////Open Storage.
-            //LoadOpenStorage(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
+            //Manufacturers.
+            LoadManufacturers(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
 
-            ////Package type.
-            //LoadPackageType(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
+            //Open Storage.
+            LoadOpenStorage(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
 
-            ////Package detail type.
-            //LoadPackageDetailType(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
+            //Package type.
+            LoadPackageType(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
 
-            ////Responsible managers.
-            //LoadResponsibleManagers(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
+            //Package detail type.
+            LoadPackageDetailType(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
 
-            ////Errand type groups and Errand types.
-            //LoadErrandTypeGroups(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
-            //LoadErrandTypes(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateErrandTypeFields());
+            //Responsible managers.
+            LoadResponsibleManagers(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
 
-            ////Phase groups and phases.
-            //LoadPhaseGroups(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
-            //LoadPhases(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreatePhasesFields());
+            //Errand type groups, Errand types and Errands.
+            LoadErrandTypeGroups(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
+            LoadErrandTypes(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateErrandTypeFields());
             LoadErrands(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateErrandFields());
 
+            //Phase groups and phases.
+            LoadPhaseGroups(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreateIdNameTimestampFields());
+            LoadPhases(bulkCopyDataIntoSqlServer, directoryInfo, userName, CreatePhasesFields());
 
             Console.WriteLine("Finished loading data");
 
             Console.ReadKey();
+        }
+
+        private static void LoadPrescriptionStatus(BulkCopyDataIntoSqlServer bulkCopyDataIntoSqlServer,
+            DirectoryInfo directoryInfo,
+            string userName,
+            Fields fields)
+        {
+            Console.WriteLine("Start loading Prescription Status.");
+
+            bulkCopyDataIntoSqlServer.LoadTable(fields,
+                "PrescriptionStatuses",
+                Settings.Default.ConnectionString,
+                Path.Combine(directoryInfo.FullName, "PRESCRIPTION_STATUS.XLSX"),
+                userName);
+
+            Console.WriteLine("Finished loading Prescription Status.");
         }
 
         private static void LoadOpenStorage(BulkCopyDataIntoSqlServer bulkCopyDataIntoSqlServer,

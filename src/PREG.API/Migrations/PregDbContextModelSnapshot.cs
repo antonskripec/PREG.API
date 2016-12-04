@@ -336,6 +336,29 @@ namespace PREG.API.Migrations
                     b.ToTable("PhaseGroups");
                 });
 
+            modelBuilder.Entity("PREG.API.Models.PrescriptionStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Created");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired();
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(75);
+
+                    b.Property<DateTime?>("Updated");
+
+                    b.Property<string>("UpdatedBy");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PrescriptionStatuses");
+                });
+
             modelBuilder.Entity("PREG.API.Models.ResponsibleManager", b =>
                 {
                     b.Property<int>("Id")
